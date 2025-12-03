@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const lessonSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   title: String,
   videoUrl: String,
   content: String,
@@ -8,6 +9,7 @@ const lessonSchema = new mongoose.Schema({
 });
 
 const batchSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   name: String,
   startDate: Date,
   endDate: Date

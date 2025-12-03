@@ -6,6 +6,11 @@ const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/auth.route.js');
 const courseRoutes = require('./routes/courses.route.js');
+const enrollmentRoutes = require('./routes/enrollment.route.js');
+const adminRoutes = require('./routes/admin.route.js');
+const assignmentRoutes = require('./routes/assignment.route.js');
+const quizRoutes = require('./routes/quiz.route.js');
+const adminEnrollmentRoutes = require('./routes/adminEnrollment.route.js');
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
@@ -18,6 +23,11 @@ app.use(cookieParser());
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/students/enrollments', enrollmentRoutes);
+app.use('/api/admin/courses', adminRoutes);
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/quizzes', quizRoutes);
+app.use('/api/admin/enrollments', adminEnrollmentRoutes);
 
 // health check
 app.get('/health', (req, res) => res.json({ ok: true }));
