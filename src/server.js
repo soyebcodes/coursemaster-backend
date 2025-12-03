@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-const authRoutes = require('./routes/auth.routes');
-const courseRoutes = require('./routes/courses.routes');
+const authRoutes = require('./routes/auth.route.js');
+const courseRoutes = require('./routes/courses.route.js');
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
@@ -26,8 +26,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+ 
 })
 .then(()=> {
   console.log('Mongo connected');
