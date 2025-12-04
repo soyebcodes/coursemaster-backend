@@ -11,6 +11,10 @@ const adminRoutes = require('./routes/admin.route.js');
 const assignmentRoutes = require('./routes/assignment.route.js');
 const quizRoutes = require('./routes/quiz.route.js');
 const adminEnrollmentRoutes = require('./routes/adminEnrollment.route.js');
+const paymentRoutes = require('./routes/payment.route.js');
+const batchRoutes = require('./routes/batch.route.js');
+const analyticsRoutes = require('./routes/analytics.route.js');
+const userManagementRoutes = require('./routes/userManagement.route.js');
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
@@ -28,6 +32,10 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/admin/enrollments', adminEnrollmentRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/batches', batchRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/admin/users', userManagementRoutes);
 
 // health check
 app.get('/health', (req, res) => res.json({ ok: true }));
