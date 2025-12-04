@@ -136,6 +136,45 @@ exports.getCourseStats = async (req, res, next) => {
 };
 
 /**
+ * Get all enrollments (Admin only)
+ */
+exports.getAllEnrollments = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+    const skip = (page - 1) * limit;
+    const status = req.query.status; // Optional filter: active, completed, dropped
+
+    const filter = {};
+    if (status) filter.status = status;
+
+    const total = await Enrollment.countDocuments(filter);
+    const enrollments = await Enrollment.find(filter)
+      .populate('student', 'name email')
+      .populate('course', 'title category')
+      .sort({ enrolledAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    // Add percentageCompleted
+    const enriched = enrollments.map(e => ({
+      ...e,
+      percentageCompleted: Math.round(
+        (e.progress.filter(p => p.completed).length / (e.progress.length || 1)) * 100
+      )
+    }));
+
+    res.json({
+      data: enriched,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * Get global platform statistics (Admin only)
  */
 exports.getPlatformStats = async (req, res, next) => {

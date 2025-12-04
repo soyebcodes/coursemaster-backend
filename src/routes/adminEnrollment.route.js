@@ -8,6 +8,12 @@ const roleCheck = require('../middlewares/roleCheck.middleware');
 router.use(authMiddleware);
 
 /**
+ * GET /api/admin/enrollments
+ * Get all enrollments (Admin only)
+ */
+router.get('/', roleCheck(['admin']), adminEnrollmentController.getAllEnrollments);
+
+/**
  * GET /api/admin/enrollments/stats
  * Get global platform statistics (Admin only)
  */
