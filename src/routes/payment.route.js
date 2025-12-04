@@ -9,35 +9,31 @@ const validate = require('../middlewares/validate.middleware');
 router.use(authMiddleware);
 
 /**
- * POST /api/payments/intent
- * Create payment intent for course purchase
+ * POST /api/payments/create-session
+ * Create SSLCommerz payment session for course purchase
  */
-const createIntentSchema = Joi.object({
+const createSessionSchema = Joi.object({
   courseId: Joi.string().required()
 });
 
-router.post('/intent', validate(createIntentSchema), paymentController.createPaymentIntent);
+router.post('/create-session', validate(createSessionSchema), paymentController.createPaymentSession);
 
 /**
- * POST /api/payments/confirm
- * Confirm payment and create enrollment
+ * GET /api/payments/validate
+ * Validate SSLCommerz payment and create enrollment
  */
-const confirmSchema = Joi.object({
-  paymentIntentId: Joi.string().required()
-});
+router.get('/validate', paymentController.validatePayment);
 
-router.post('/confirm', validate(confirmSchema), paymentController.confirmPayment);
+/**
+ * POST /api/payments/webhook
+ * SSLCommerz IPN webhook handler
+ */
+router.post('/webhook', express.raw({ type: 'application/json' }), paymentController.sslcommerzWebhook);
 
 /**
  * GET /api/payments/orders
  * Get user's orders
  */
 router.get('/orders', paymentController.getUserOrders);
-
-/**
- * POST /api/payments/webhook
- * Stripe webhook handler
- */
-router.post('/webhook', express.raw({ type: 'application/json' }), paymentController.stripeWebhook);
 
 module.exports = router;
