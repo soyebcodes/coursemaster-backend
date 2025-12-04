@@ -49,18 +49,18 @@ if (!process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI not defined in .env');
 }
 
-mongoose.connect(process.env.MONGODB_URI, {
-  serverSelectionTimeoutMS: 5000,
-})
-.then(() => {
-  console.log('Mongo connected');
-  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-})
-.catch(err => {
-  console.error('Mongo connection error', err);
-  process.exit(1);
-});
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Mongo connected');
+    app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+  } catch (err) {
+    console.error('Mongo connection error', err);
+    process.exit(1);
+  }
+}
 
+startServer();
 // graceful shutdown
 process.on('SIGINT', async () => {
   await mongoose.connection.close();
