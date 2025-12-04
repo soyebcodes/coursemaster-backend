@@ -1,9 +1,21 @@
 const { assignmentModel, submissionModel } = require('../models/Assignment');
 const Course = require('../models/Course');
 
-/**
- * Create an assignment (Admin/Instructor only)
- */
+exports.listAssignments = async (req, res, next) => {
+  try {
+    const { courseId } = req.query;
+    const filter = {};
+    if (courseId) {
+      filter.course = courseId;
+    }
+
+    const assignments = await assignmentModel.find(filter).lean();
+    res.json(assignments);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.createAssignment = async (req, res, next) => {
   try {
     const { courseId, title, description, dueDate } = req.body;

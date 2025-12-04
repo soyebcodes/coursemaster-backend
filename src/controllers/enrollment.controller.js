@@ -26,11 +26,13 @@ exports.enrollCourse = async (req, res, next) => {
       percentageCompleted: 0
     });
 
-    const populated = await enrollment.populate('course', 'title').populate('student', 'name email');
+    // Fix populate chaining issue
+    await enrollment.populate('course', 'title');
+    await enrollment.populate('student', 'name email');
 
     res.status(201).json({
       message: 'Successfully enrolled in course',
-      enrollment: populated
+      enrollment
     });
   } catch (err) {
     next(err);

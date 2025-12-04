@@ -9,6 +9,8 @@ const validate = require('../middlewares/validate.middleware');
 // All routes require authentication
 router.use(authMiddleware);
 
+router.get('/', assignmentController.listAssignments);
+
 /**
  * POST /api/assignments/:assignmentId/submit
  * Student submits an assignment
