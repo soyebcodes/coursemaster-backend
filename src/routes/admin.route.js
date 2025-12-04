@@ -9,12 +9,15 @@ const validate = require('../middlewares/validate.middleware');
 // All routes require authentication
 router.use(authMiddleware);
 
-// Admin/Instructor only routes
-router.use(roleCheck(['admin', 'instructor']));
+/**
+ * GET /api/admin/stats
+ * Get global platform statistics (Admin only)
+ */
+router.get('/stats', roleCheck(['admin']), adminController.getPlatformStats);
 
 /**
  * POST /api/admin/courses
- * Create a new course
+ * Create a new course (Admin/Instructor)
  */
 const createCourseSchema = Joi.object({
   title: Joi.string().required(),
@@ -39,24 +42,24 @@ const createCourseSchema = Joi.object({
   ).optional()
 });
 
-router.post('/', validate(createCourseSchema), adminController.createCourse);
+router.post('/courses', roleCheck(['admin', 'instructor']), validate(createCourseSchema), adminController.createCourse);
 
 /**
  * PUT /api/admin/courses/:courseId
- * Update a course
+ * Update a course (Admin/Instructor)
  */
-router.put('/:courseId', validate(createCourseSchema), adminController.updateCourse);
+router.put('/courses/:courseId', roleCheck(['admin', 'instructor']), validate(createCourseSchema), adminController.updateCourse);
 
 /**
  * DELETE /api/admin/courses/:courseId
- * Delete a course
+ * Delete a course (Admin/Instructor)
  */
-router.delete('/:courseId', adminController.deleteCourse);
+router.delete('/courses/:courseId', roleCheck(['admin', 'instructor']), adminController.deleteCourse);
 
 /**
  * GET /api/admin/courses/:courseId/edit
- * Get course for editing
+ * Get course for editing (Admin/Instructor)
  */
-router.get('/:courseId/edit', adminController.getCourseForEdit);
+router.get('/courses/:courseId/edit', roleCheck(['admin', 'instructor']), adminController.getCourseForEdit);
 
 module.exports = router;

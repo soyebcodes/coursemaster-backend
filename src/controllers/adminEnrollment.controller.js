@@ -134,3 +134,43 @@ exports.getCourseStats = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * Get global platform statistics (Admin only)
+ */
+exports.getPlatformStats = async (req, res, next) => {
+  try {
+    const User = require('../models/User');
+    const totalCourses = await Course.countDocuments();
+    const totalUsers = await User.countDocuments();
+    const studentCount = await User.countDocuments({ role: 'student' });
+    const instructorCount = await User.countDocuments({ role: 'instructor' });
+    const totalEnrollments = await Enrollment.countDocuments();
+    const completedEnrollments = await Enrollment.countDocuments({ status: 'completed' });
+
+    const enrollments = await Enrollment.find().lean();
+    const avgProgress = enrollments.length > 0
+      ? Math.round(
+          enrollments.reduce((sum, e) => {
+            const completed = e.progress.filter(p => p.completed).length;
+            return sum + (completed / (e.progress.length || 1)) * 100;
+          }, 0) / enrollments.length
+        )
+      : 0;
+
+    const stats = {
+      totalCourses,
+      totalUsers,
+      studentCount,
+      instructorCount,
+      totalEnrollments,
+      completedEnrollments,
+      activeEnrollments: totalEnrollments - completedEnrollments,
+      avgProgress
+    };
+
+    res.json({ stats });
+  } catch (err) {
+    next(err);
+  }
+};

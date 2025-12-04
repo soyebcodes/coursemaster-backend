@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/students/enrollments', enrollmentRoutes);
-app.use('/api/admin/courses', adminRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/admin/enrollments', adminEnrollmentRoutes);

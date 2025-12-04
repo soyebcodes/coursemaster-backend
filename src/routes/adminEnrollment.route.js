@@ -7,25 +7,28 @@ const roleCheck = require('../middlewares/roleCheck.middleware');
 // All routes require authentication
 router.use(authMiddleware);
 
-// Admin/Instructor only routes
-router.use(roleCheck(['admin', 'instructor']));
+/**
+ * GET /api/admin/enrollments/stats
+ * Get global platform statistics (Admin only)
+ */
+router.get('/stats', roleCheck(['admin']), adminEnrollmentController.getPlatformStats);
 
 /**
  * GET /api/admin/enrollments/courses/:courseId
- * Get all enrollments for a course
+ * Get all enrollments for a course (Admin/Instructor)
  */
-router.get('/courses/:courseId', adminEnrollmentController.getCourseEnrollments);
+router.get('/courses/:courseId', roleCheck(['admin', 'instructor']), adminEnrollmentController.getCourseEnrollments);
 
 /**
  * GET /api/admin/enrollments/courses/:courseId/batches/:batchId
- * Get enrollments for a specific batch
+ * Get enrollments for a specific batch (Admin/Instructor)
  */
-router.get('/courses/:courseId/batches/:batchId', adminEnrollmentController.getBatchEnrollments);
+router.get('/courses/:courseId/batches/:batchId', roleCheck(['admin', 'instructor']), adminEnrollmentController.getBatchEnrollments);
 
 /**
  * GET /api/admin/enrollments/courses/:courseId/stats
- * Get enrollment statistics for a course
+ * Get enrollment statistics for a course (Admin/Instructor)
  */
-router.get('/courses/:courseId/stats', adminEnrollmentController.getCourseStats);
+router.get('/courses/:courseId/stats', roleCheck(['admin', 'instructor']), adminEnrollmentController.getCourseStats);
 
 module.exports = router;
