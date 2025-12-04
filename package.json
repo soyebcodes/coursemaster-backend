@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "seed": "node seedAdmin.js"
+    "seed": "node seedAdmin.js",
+    "change-admin-password": "node scripts/changeAdminPassword.js"
   },
   "keywords": [],
   "author": "",
