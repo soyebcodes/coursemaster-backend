@@ -2,6 +2,43 @@ const { quizModel, attemptModel } = require('../models/Quiz');
 const Course = require('../models/Course');
 
 /**
+ * Get all quizzes for a specific course
+ */
+exports.getQuizzesByCourse = async (req, res, next) => {
+  try {
+    const { courseId } = req.query;
+    
+    if (!courseId) {
+      return res.status(400).json({ message: 'courseId is required' });
+    }
+
+    // Check if the course exists
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    // Check if user is enrolled in the course or is an admin/instructor
+    const isAdminOrInstructor = ['admin', 'instructor'].includes(req.user.role);
+    const isEnrolled = course.students.some(
+      student => student.student.toString() === req.user.id
+    );
+
+    if (!isAdminOrInstructor && !isEnrolled) {
+      return res.status(403).json({ message: 'You are not enrolled in this course' });
+    }
+
+    const quizzes = await quizModel.find({ course: courseId })
+      .select('-questions.options.isCorrect') // Don't send correct answers
+      .sort({ createdAt: -1 });
+
+    res.json({ quizzes });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * Create a quiz (Admin/Instructor only)
  */
 exports.createQuiz = async (req, res, next) => {

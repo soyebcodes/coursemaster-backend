@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const quizController = require('../controllers/quiz.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const roleCheck = require('../middlewares/roleCheck.middleware');
@@ -11,6 +11,15 @@ router.use(authMiddleware);
 
 // Admin/Instructor only
 const adminOnly = roleCheck(['admin', 'instructor']);
+
+/**
+ * GET /api/courses/:courseId/quizzes
+ * Get all quizzes for a course
+ */
+router.get('/', (req, res, next) => {
+  req.query.courseId = req.params.courseId; // Move courseId from params to query for the controller
+  quizController.getQuizzesByCourse(req, res, next);
+});
 
 /**
  * POST /api/quizzes/courses/:courseId
