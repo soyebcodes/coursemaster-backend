@@ -37,6 +37,17 @@ app.use('/api/batches', batchRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/admin/users', userManagementRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to CourseMaster API',
+    status: 'running',
+    documentation: 'API documentation available at /api-docs',
+    health: '/health',
+    version: '1.0.0'
+  });
+});
+
 // health check
 app.get('/health', (req, res) => res.json({ ok: true }));
 
