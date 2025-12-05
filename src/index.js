@@ -15,7 +15,7 @@ const paymentRoutes = require('./routes/payment.route.js');
 const batchRoutes = require('./routes/batch.route.js');
 const analyticsRoutes = require('./routes/analytics.route.js');
 const userManagementRoutes = require('./routes/userManagement.route.js');
-const errorHandler = require('./middlewares/error.middleware');
+const errorHandler = require('./middlewares/error.middleware.js');
 
 const app = express();
 
