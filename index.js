@@ -4,18 +4,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-const authRoutes = require('./routes/auth.route.js');
-const courseRoutes = require('./routes/courses.route.js');
-const enrollmentRoutes = require('./routes/enrollment.route.js');
-const adminRoutes = require('./routes/admin.route.js');
-const assignmentRoutes = require('./routes/assignment.route.js');
-const quizRoutes = require('./routes/quiz.route.js');
-const adminEnrollmentRoutes = require('./routes/adminEnrollment.route.js');
-const paymentRoutes = require('./routes/payment.route.js');
-const batchRoutes = require('./routes/batch.route.js');
-const analyticsRoutes = require('./routes/analytics.route.js');
-const userManagementRoutes = require('./routes/userManagement.route.js');
-const errorHandler = require('./middlewares/error.middleware.js');
+const authRoutes = require('./src/routes/auth.route.js');
+const courseRoutes = require('./src/routes/courses.route.js');
+const enrollmentRoutes = require('./src/routes/enrollment.route.js');
+const adminRoutes = require('./src/routes/admin.route.js');
+const assignmentRoutes = require('./src/routes/assignment.route.js');
+const quizRoutes = require('./src/routes/quiz.route.js');
+const adminEnrollmentRoutes = require('./src/routes/adminEnrollment.route.js');
+const paymentRoutes = require('./src/routes/payment.route.js');
+const batchRoutes = require('./src/routes/batch.route.js');
+const analyticsRoutes = require('./src/routes/analytics.route.js');
+const userManagementRoutes = require('./src/routes/userManagement.route.js');
+const errorHandler = require('./src/middlewares/error.middleware.js');
 
 const app = express();
 
